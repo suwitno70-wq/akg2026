@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKG 2026 – AI Pembahasan Soal Guru Madrasah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kemenag: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                            dark: '#022c22'
+                        },
+                        gold: {
+                            500: '#d97706',
+                            600: '#b45309'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #059669;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="h-full bg-slate-100 font-sans text-slate-800 antialiased flex flex-col">
+
+    <header class="bg-gradient-to-r from-kemenag-900 via-kemenag-700 to-kemenag-800 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('dashboard')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-500 to-kemenag-500 flex items-center justify-center shadow-inner text-white font-bold text-lg">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-base sm:text-lg tracking-wide flex items-center gap-2">
+                        AKG 2026 <span class="bg-gold-500/80 text-white text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider">AI Madrasah</span>
+                    </h1>
+                    <p class="text-xs text-kemenag-100 opacity-90">Kreatif by Witno</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="switchTab('pembahasan')" class="bg-kemenag-600 hover:bg-kemenag-500 text-white px-3 py-1.5 rounded-lg text-xs font-medium shadow transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> <span class="hidden sm:inline">Mulai Bahas</span>
+                </button>
+                <button onclick="toggleMobileMenu()" class="md:hidden text-white p-2 rounded-lg hover:bg-kemenag-800 focus:outline-none">
+                    <i class="fa-solid fa-bars text-lg" id="mobile-menu-icon"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-kemenag-900 border-t border-kemenag-800 px-4 py-3 space-y-2 text-sm shadow-xl">
+            <a href="#" onclick="switchTab('dashboard'); toggleMobileMenu();" class="block py-2 px-3 rounded hover:bg-kemenag-800"><i class="fa-solid fa-chart-pie mr-2"></i> Dashboard</a>
+            <a href="#" onclick="switchTab('pembahasan'); toggleMobileMenu();" class="block py-2 px-3 rounded hover:bg-kemenag-800"><i class="fa-solid fa-brain mr-2"></i> Pembahasan Soal AI</a>
+            <a href="#" onclick="switchTab('auto-gen'); toggleMobileMenu();" class="block py-2 px-3 rounded hover:bg-kemenag-800 text-gold-400 font-bold"><i class="fa-solid fa-robot mr-2"></i> Auto-Generate Soal</a>
+            <a href="#" onclick="switchTab('bank-soal'); toggleMobileMenu();" class="block py-2 px-3 rounded hover:bg-kemenag-800"><i class="fa-solid fa-database mr-2"></i> Bank Soal</a>
+            <a href="#" onclick="switchTab('latihan'); toggleMobileMenu();" class="block py-2 px-3 rounded hover:bg-kemenag-800"><i class="fa-solid fa-laptop-code mr-2"></i> Latihan AKG</a>
+            <a href="#" onclick="switchTab('riwayat'); toggleMobileMenu();" class="block py-2 px-3 rounded hover:bg-kemenag-800"><i class="fa-solid fa-clock-rotate-left mr-2"></i> Riwayat</a>
+            <a href="#" onclick="switchTab('analisis'); toggleMobileMenu();" class="block py-2 px-3 rounded hover:bg-kemenag-800"><i class="fa-solid fa-chart-line mr-2"></i> Analisis Kompetensi</a>
+            <a href="#" onclick="switchTab('deploy'); toggleMobileMenu();" class="block py-2 px-3 rounded hover:bg-kemenag-800 text-emerald-300 font-bold"><i class="fa-solid fa-cloud-arrow-up mr-2"></i> Panduan Deploy Hosting</a>
+            <a href="#" onclick="switchTab('pengaturan'); toggleMobileMenu();" class="block py-2 px-3 rounded hover:bg-kemenag-800"><i class="fa-solid fa-gear mr-2"></i> Pengaturan AI</a>
+        </div>
+    </header>
+
+    <div class="flex-1 flex max-w-7xl w-full mx-auto overflow-hidden">
+        
+        <aside class="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 p-4 space-y-1 overflow-y-auto">
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-3">Menu Utama</div>
+            <a href="#" onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition bg-kemenag-50 text-kemenag-700">
+                <i class="fa-solid fa-chart-pie w-5"></i><span>Dashboard</span>
+            </a>
+            <a href="#" onclick="switchTab('pembahasan')" id="nav-pembahasan" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                <i class="fa-solid fa-brain w-5 text-kemenag-600"></i><span>Pembahasan Soal AI</span>
+            </a>
+            <a href="#" onclick="switchTab('auto-gen')" id="nav-auto-gen" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                <i class="fa-solid fa-robot w-5 text-gold-500"></i><span>Auto-Generate Soal <span class="bg-gold-500 text-white text-[9px] px-1.5 py-0.2 rounded-full font-bold">AI</span></span>
+            </a>
+            <a href="#" onclick="switchTab('bank-soal')" id="nav-bank-soal" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                <i class="fa-solid fa-database w-5 text-amber-600"></i><span>Bank Soal</span>
+            </a>
+            <a href="#" onclick="switchTab('latihan')" id="nav-latihan" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                <i class="fa-solid fa-laptop-code w-5 text-emerald-600"></i><span>Latihan AKG</span>
+            </a>
+            <a href="#" onclick="switchTab('riwayat')" id="nav-riwayat" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                <i class="fa-solid fa-clock-rotate-left w-5 text-blue-600"></i><span>Riwayat Pembahasan</span>
+            </a>
+            <a href="#" onclick="switchTab('analisis')" id="nav-analisis" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                <i class="fa-solid fa-chart-line w-5 text-indigo-600"></i><span>Analisis Kompetensi</span>
+            </a>
+            <a href="#" onclick="switchTab('deploy')" id="nav-deploy" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                <i class="fa-solid fa-cloud-arrow-up w-5 text-emerald-600"></i><span>Panduan Deploy Hosting</span>
+            </a>
+            <a href="#" onclick="switchTab('pengaturan')" id="nav-pengaturan" class="nav-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                <i class="fa-solid fa-gear w-5 text-slate-600"></i><span>Konfigurasi AI</span>
+            </a>
+
+            <div class="pt-6 mt-6 border-t border-slate-100">
+                <div class="p-3 bg-kemenag-50 rounded-xl border border-kemenag-100">
+                    <div class="flex items-center space-x-2 text-kemenag-800 font-semibold text-xs mb-1">
+                        <i class="fa-solid fa-circle-check text-kemenag-600"></i> Standar Kemenag
+                    </div>
+                    <p class="text-[11px] text-slate-600 leading-relaxed">Berbasis kisi-kisi resmi Asesmen Kompetensi Guru Kementerian Agama 2026.</p>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 overflow-y-auto p-4 sm:p-6 bg-slate-50">
+            
+            <!-- Dashboard Tab -->
+            <section id="tab-dashboard" class="tab-content space-y-6 animate-fade-in">
+                <!-- Welcome Banner -->
+                <div class="bg-gradient-to-r from-kemenag-800 via-kemenag-700 to-kemenag-600 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
+                    <div class="absolute -right-6 -bottom-6 opacity-10 text-9xl">
+                        <i class="fa-solid fa-mosque"></i>
+                    </div>
+                    <div class="relative z-10 max-w-2xl">
+                        <span class="bg-gold-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Persiapan AKG 2026</span>
+                        <h2 class="text-xl sm:text-2xl font-bold mt-2">Selamat Datang, Guru Madrasah Profesional!</h2>
+                        <p class="text-kemenag-100 text-xs sm:text-sm mt-1 leading-relaxed">
+                            Gunakan asisten AI cerdas untuk meng-generate soal otomatis, menganalisis kasus pedagogis, latihan tryout interaktif, dan simulasi soal sejenis demi kesuksesan AKG 2026.
+                        </p>
+                        <div class="mt-4 flex flex-wrap gap-3">
+                            <button onclick="switchTab('auto-gen')" class="bg-gold-500 hover:bg-gold-600 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition flex items-center gap-2">
+                                <i class="fa-solid fa-robot"></i> Auto-Generate Soal Baru
+                            </button>
+                            <button onclick="switchTab('pembahasan')" class="bg-white text-kemenag-800 hover:bg-kemenag-50 px-4 py-2 rounded-xl text-xs font-semibold shadow transition flex items-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles text-kemenag-600"></i> Bahas Soal Manual
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-xl bg-kemenag-100 text-kemenag-600 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 font-medium">Soal Dibahas</p>
+                            <h3 class="text-xl font-bold text-slate-800" id="stat-total-bahas">24</h3>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-clipboard-check"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 font-medium">Sesi Latihan</p>
+                            <h3 class="text-xl font-bold text-slate-800" id="stat-total-latihan">8</h3>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 font-medium">Akurasi Rata-rata</p>
+                            <h3 class="text-xl font-bold text-slate-800" id="stat-akurasi">84%</h3>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-database"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 font-medium">Bank Soal</p>
+                            <h3 class="text-xl font-bold text-slate-800" id="stat-bank-soal">120</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions & Recent Activity -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                                <i class="fa-solid fa-clock-rotate-left text-kemenag-600"></i> Riwayat Pembahasan Terakhir
+                            </h3>
+                            <button onclick="switchTab('riwayat')" class="text-xs text-kemenag-600 font-semibold hover:underline">Lihat Semua</button>
+                        </div>
+                        <div id="recent-history-list" class="space-y-3">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-base flex items-center gap-2 mb-3">
+                                <i class="fa-solid fa-lightbulb text-gold-500"></i> Fokus Materi AKG 2026
+                            </h3>
+                            <div class="space-y-2 text-xs text-slate-600">
+                                <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
+                                    <span>Pedagogik & Karakter Guru</span>
+                                    <span class="bg-kemenag-100 text-kemenag-700 px-2 py-0.5 rounded text-[10px] font-bold">Prioritas</span>
+                                </div>
+                                <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
+                                    <span>Profesional Bidang Studi</span>
+                                    <span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-bold">HOTS</span>
+                                </div>
+                                <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
+                                    <span>Moderasi Beragama</span>
+                                    <span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[10px] font-bold">Wajib</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-100">
+                            <button onclick="switchTab('auto-gen')" class="w-full bg-gold-50 hover:bg-gold-100 text-gold-800 py-2 rounded-xl text-xs font-semibold transition text-center flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-robot"></i> Buka Auto-Generator Soal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Auto-Generate Soal Tab -->
+            <section id="tab-auto-gen" class="tab-content hidden space-y-6 animate-fade-in">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-5">
+                    <div class="pb-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <span class="bg-gold-100 text-gold-800 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> AI Powered</span>
+                            <h2 class="text-lg font-bold text-slate-800 mt-1">Auto-Generate Soal AKG 2026 Otomatis</h2>
+                            <p class="text-xs text-slate-500">Pilih mata pelajaran, tingkat kesulitan, dan jumlah soal untuk langsung dibuatkan paket soal beserta kunci dan pembahasannya secara instan.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Mata Pelajaran / Bidang</label>
+                            <select id="gen-mapel" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                                <option value="Pedagogik & Karakter Guru">Pedagogik & Karakter Guru</option>
+                                <option value="Guru Kelas MI">Guru Kelas MI (Tematik)</option>
+                                <option value="PAI & Bahasa Arab">PAI & Bahasa Arab (Kemenag)</option>
+                                <option value="Matematika MA/MTs">Matematika</option>
+                                <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                                <option value="Fikih / Ushul Fikih">Fikih / Ushul Fikih</option>
+                                <option value="Al-Qur'an Hadis">Al-Qur'an Hadis</option>
+                                <option value="Akidah Akhlak">Akidah Akhlak</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Jenjang Madrasah</label>
+                            <select id="gen-jenjang" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                                <option value="MI">MI (Madrasah Ibtidaiyah)</option>
+                                <option value="MTs">MTs (Madrasah Tsanawiyah)</option>
+                                <option value="MA" selected>MA (Madrasah Aliyah)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tingkat Kesulitan</label>
+                            <select id="gen-kesulitan" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                                <option value="HOTS & Studi Kasus">HOTS & Studi Kasus Tinggi</option>
+                                <option value="Sedang">Standar / Sedang</option>
+                                <option value="Campuran">Campuran (Mudah - HOTS)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Jumlah Soal yang Dibuat</label>
+                            <select id="gen-jumlah" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                                <option value="3">3 Soal (Kilat)</option>
+                                <option value="5" selected>5 Soal (Standar)</option>
+                                <option value="10">10 Soal (Komprehensif)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Fokus Topik / Indikator (Opsional)</label>
+                            <input type="text" id="gen-topik" placeholder="Contoh: Kurikulum Merdeka, Penilaian Formatif, Tasamuh" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button onclick="triggerAutoGenerate()" id="btn-auto-gen" class="w-full bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-700 hover:to-gold-600 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-solid fa-robot"></i> GENERATE SOAL OTOMATIS SEKARANG
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Auto-Gen Loading State -->
+                <div id="auto-gen-loading" class="hidden bg-white rounded-2xl p-8 text-center shadow-sm border border-slate-200">
+                    <div class="inline-block animate-spin text-gold-600 text-4xl mb-3">
+                        <i class="fa-solid fa-spinner"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 text-base">AI sedang menyusun paket soal AKG 2026...</h4>
+                    <p class="text-xs text-slate-500 mt-1">Menganalisis standar kompetensi Kemenag, menyusun indikator HOTS, dan menyiapkan kunci pembahasan.</p>
+                </div>
+
+                <!-- Auto-Gen Result Container -->
+                <div id="auto-gen-result" class="hidden space-y-4">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+                            <div>
+                                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase">Berhasil Di-Generate</span>
+                                <h3 class="font-bold text-slate-800 text-base mt-1" id="auto-gen-result-title">Paket Soal AKG Otomatis</h3>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="saveGeneratedToBank()" class="bg-kemenag-600 hover:bg-kemenag-500 text-white px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-database"></i> Simpan ke Bank Soal
+                                </button>
+                                <button onclick="window.print()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-print"></i> Cetak / PDF
+                                </button>
+                            </div>
+                        </div>
+                        <div id="auto-gen-questions-list" class="space-y-4">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pembahasan Tab -->
+            <section id="tab-pembahasan" class="tab-content hidden space-y-6 animate-fade-in">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-2">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles text-kemenag-600"></i> AI Generator Pembahasan Soal AKG
+                            </h2>
+                            <p class="text-xs text-slate-500">Masukkan detail soal AKG untuk mendapatkan analisis langkah demi langkah.</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="loadSampleQuestion()" class="bg-amber-50 hover:bg-amber-100 text-amber-800 px-3 py-1.5 rounded-lg text-xs font-semibold transition border border-amber-200">
+                                <i class="fa-solid fa-file-import mr-1"></i> Muat Contoh Soal
+                            </button>
+                            <button onclick="resetForm()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold transition">
+                                <i class="fa-solid fa-rotate-right mr-1"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Input Form -->
+                    <form id="ai-form" onsubmit="handleAnalyzeQuestion(event)" class="mt-4 space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Mata Pelajaran / Bidang</label>
+                                <select id="input-mapel" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                                    <option value="Pedagogik Umum">Pedagogik & Kompetensi Guru</option>
+                                    <option value="Guru Kelas MI">Guru Kelas MI (Tematik/SD-MI)</option>
+                                    <option value="PAI & Bahasa Arab">PAI & Bahasa Arab (Kemenag)</option>
+                                    <option value="Matematika MA/MTs">Matematika</option>
+                                    <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                                    <option value="Bahasa Inggris">Bahasa Inggris</option>
+                                    <option value="Fikih / Ushul Fikih">Fikih / Ushul Fikih</option>
+                                    <option value="Al-Qur'an Hadis">Al-Qur'an Hadis</option>
+                                    <option value="Akidah Akhlak">Akidah Akhlak</option>
+                                    <option value="SKI (Sejarah Kebudayaan Islam)">SKI (Sejarah Kebudayaan Islam)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Jenjang Madrasah</label>
+                                <select id="input-jenjang" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                                    <option value="MI">MI (Madrasah Ibtidaiyah)</option>
+                                    <option value="MTs">MTs (Madrasah Tsanawiyah)</option>
+                                    <option value="MA" selected>MA (Madrasah Aliyah)</option>
+                                    <option value="Semua Jenjang">Semua Jenjang / Umum</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Nomor Soal & Sumber (Opsional)</label>
+                                <div class="flex gap-2">
+                                    <input type="text" id="input-no" placeholder="No. 1" class="w-1/3 p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                                    <input type="text" id="input-sumber" placeholder="Sumber/Tahun" class="w-2/3 p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Teks Soal / Studi Kasus AKG</label>
+                            <textarea id="input-soal" rows="4" placeholder="Ketik atau paste teks soal lengkap di sini..." class="w-full p-3 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none"></textarea>
+                        </div>
+
+                        <!-- Options A-E -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0">A</span>
+                                <input type="text" id="input-opt-a" placeholder="Pilihan A" class="w-full p-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0">B</span>
+                                <input type="text" id="input-opt-b" placeholder="Pilihan B" class="w-full p-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0">C</span>
+                                <input type="text" id="input-opt-c" placeholder="Pilihan C" class="w-full p-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0">D</span>
+                                <input type="text" id="input-opt-d" placeholder="Pilihan D" class="w-full p-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                            </div>
+                            <div class="flex items-center gap-2 sm:col-span-2">
+                                <span class="w-7 h-7 rounded-lg bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0">E</span>
+                                <input type="text" id="input-opt-e" placeholder="Pilihan E (Opsional)" class="w-full p-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <!-- Cek Jawaban & Mode -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-100">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Cek Jawaban Saya (Opsional)</label>
+                                <select id="input-user-jawaban" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                                    <option value="">-- Pilih jika ingin menguji jawaban Anda --</option>
+                                    <option value="A">Pilihan A</option>
+                                    <option value="B">Pilihan B</option>
+                                    <option value="C">Pilihan C</option>
+                                    <option value="D">Pilihan D</option>
+                                    <option value="E">Pilihan E</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Mode Pembahasan AI</label>
+                                <select id="input-mode" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                                    <option value="lengkap">Mode 2 – Pembahasan Lengkap & Sistematis</option>
+                                    <option value="singkat">Mode 1 – Pembahasan Singkat (5-7 kalimat)</option>
+                                    <option value="mudah">Mode 3 – Pembahasan Mudah (Bahasa Sederhana)</option>
+                                    <option value="akademik">Mode 4 – Pembahasan Akademik & Profesional</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="pt-3">
+                            <button type="submit" id="btn-analisis" class="w-full bg-gradient-to-r from-kemenag-700 to-kemenag-600 hover:from-kemenag-800 hover:to-kemenag-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Analisis & Buat Pembahasan AI
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- AI Output Result Section -->
+                <div id="ai-output-container" class="hidden space-y-6">
+                    <div id="ai-loading" class="hidden bg-white rounded-2xl p-8 text-center shadow-sm border border-slate-200">
+                        <div class="inline-block animate-spin text-kemenag-600 text-4xl mb-3">
+                            <i class="fa-solid fa-spinner"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base">AI Expert sedang menganalisis soal...</h4>
+                        <p class="text-xs text-slate-500 mt-1">Mengidentifikasi kompetensi pedagogik/profesional, mengevaluasi opsi, dan menyusun pembahasan.</p>
+                    </div>
+
+                    <div id="ai-result-content" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+                            <div>
+                                <span class="bg-kemenag-100 text-kemenag-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider" id="res-badge-mapel">Pedagogik</span>
+                                <h3 class="text-lg font-bold text-slate-800 mt-2" id="res-title">Analisis Pembahasan Soal AKG 2026</h3>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="exportResult('salin')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1">
+                                    <i class="fa-solid fa-copy"></i> Salin
+                                </button>
+                                <button onclick="exportResult('pdf')" class="bg-kemenag-600 hover:bg-kemenag-500 text-white px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1">
+                                    <i class="fa-solid fa-download"></i> Ekspor / Cetak
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="res-user-check-box" class="hidden p-4 rounded-xl border">
+                            <div class="flex items-center space-x-3">
+                                <div id="res-check-icon" class="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold text-white shrink-0"></div>
+                                <div>
+                                    <h4 class="font-bold text-sm" id="res-check-status-title">Status Jawaban</h4>
+                                    <p class="text-xs text-slate-600 mt-0.5" id="res-check-desc">Penjelasan status jawaban pengguna.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 1. Identifikasi Soal -->
+                        <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 space-y-2">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-kemenag-800 flex items-center gap-2">
+                                <i class="fa-solid fa-bullseye text-kemenag-600"></i> 1. Identifikasi Soal & Kompetensi
+                            </h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700 pt-1">
+                                <div><strong class="text-slate-900">Materi:</strong> <span id="res-materi">-</span></div>
+                                <div><strong class="text-slate-900">Submateri:</strong> <span id="res-submateri">-</span></div>
+                                <div><strong class="text-slate-900">Kompetensi Diukur:</strong> <span id="res-kompetensi">-</span></div>
+                                <div><strong class="text-slate-900">Kata Kunci:</strong> <span id="res-keyword">-</span></div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Jenis Soal -->
+                        <div class="flex items-center justify-between bg-kemenag-50 p-3 rounded-xl border border-kemenag-100 text-xs">
+                            <span class="font-semibold text-kemenag-900"><i class="fa-solid fa-tag text-kemenag-600 mr-1.5"></i> Klasifikasi Jenis Soal:</span>
+                            <span id="res-jenis-soal" class="bg-kemenag-200 text-kemenag-900 px-3 py-1 rounded-lg font-bold">Analisis / Studi Kasus</span>
+                        </div>
+
+                        <!-- 3. Jawaban Paling Tepat -->
+                        <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+                            <h4 class="font-bold text-xs text-emerald-900 uppercase tracking-wider mb-1"><i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Jawaban Paling Tepat</h4>
+                            <p class="text-sm font-bold text-emerald-950" id="res-jawaban-tepat">-</p>
+                        </div>
+
+                        <!-- 4. Pembahasan Langkah demi Langkah -->
+                        <div class="space-y-2">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-slate-800 flex items-center gap-2">
+                                <i class="fa-solid fa-book-open text-kemenag-600"></i> 4. Pembahasan Sistematis
+                            </h4>
+                            <div id="res-pembahasan-teks" class="text-xs sm:text-sm text-slate-700 leading-relaxed space-y-2 p-4 bg-white border border-slate-200 rounded-xl"></div>
+                        </div>
+
+                        <!-- 5. Analisis Pilihan A-E -->
+                        <div class="space-y-2">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-slate-800 flex items-center gap-2">
+                                <i class="fa-solid fa-list-check text-kemenag-600"></i> 5. Analisis Pilihan Jawaban
+                            </h4>
+                            <div id="res-analisis-pilihan" class="space-y-2 text-xs"></div>
+                        </div>
+
+                        <!-- 6. Tips Menjawab & Materi Terkait -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-1">
+                                <h4 class="font-bold text-xs uppercase tracking-wider text-amber-900 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-lightbulb text-amber-600"></i> 6. Tips & Strategi
+                                </h4>
+                                <p id="res-tips" class="text-xs text-amber-950 leading-relaxed"></p>
+                            </div>
+                            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 space-y-1">
+                                <h4 class="font-bold text-xs uppercase tracking-wider text-blue-900 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-book text-blue-600"></i> 7. Materi Perlu Dipelajari
+                                </h4>
+                                <p id="res-materi-belajar" class="text-xs text-blue-950 leading-relaxed"></p>
+                            </div>
+                        </div>
+
+                        <!-- Referensi Kemenag -->
+                        <div class="p-3 bg-slate-100 rounded-xl text-[11px] text-slate-600 flex items-center justify-between">
+                            <span><i class="fa-solid fa-shield-halved text-kemenag-700 mr-1"></i> Referensi: Kisi-kisi Resmi AKG Kementerian Agama & Standar Pedagogik Nasional.</span>
+                            <span class="font-bold text-slate-800">AKG 2026</span>
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <p class="text-xs text-slate-500">Ingin menguji pemahaman lebih lanjut dengan tipe soal serupa?</p>
+                            <button onclick="generateSimilarQuestions()" class="bg-gold-500 hover:bg-gold-600 text-white font-semibold py-2.5 px-5 rounded-xl text-xs shadow transition flex items-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> GENERATE SOAL SEJENIS (5 Level)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Similar Questions Container -->
+                <div id="similar-questions-container" class="hidden space-y-4">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                            <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                                <i class="fa-solid fa-layer-group text-gold-500"></i> Hasil Generate 5 Soal Latihan Sejenis
+                            </h3>
+                            <span class="bg-gold-100 text-gold-800 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">Original AI</span>
+                        </div>
+                        <div id="similar-list" class="space-y-4"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bank Soal Tab -->
+            <section id="tab-bank-soal" class="tab-content hidden space-y-6 animate-fade-in">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                <i class="fa-solid fa-database text-kemenag-600"></i> Bank Soal AKG Madrasah 2026
+                            </h2>
+                            <p class="text-xs text-slate-500">Koleksi soal latihan pilihan dengan standar HOTS dan Kemenag.</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <select id="filter-bank-jenjang" onchange="filterBankSoal()" class="p-2 rounded-xl border border-slate-300 text-xs focus:outline-none">
+                                <option value="">Semua Jenjang</option>
+                                <option value="MI">MI</option>
+                                <option value="MTs">MTs</option>
+                                <option value="MA">MA</option>
+                            </select>
+                            <button onclick="openAddQuestionModal()" class="bg-kemenag-600 hover:bg-kemenag-500 text-white px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-plus"></i> Tambah Soal
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                            <i class="fa-solid fa-search"></i>
+                        </span>
+                        <input type="text" id="search-bank" oninput="filterBankSoal()" placeholder="Cari berdasarkan materi, kata kunci, atau isi soal..." class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                    </div>
+
+                    <div id="bank-soal-list" class="space-y-3"></div>
+                </div>
+            </section>
+
+            <!-- Latihan Tab -->
+            <section id="tab-latihan" class="tab-content hidden space-y-6 animate-fade-in">
+                <div id="latihan-setup-card" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-5 max-w-2xl mx-auto">
+                    <div class="text-center space-y-1">
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl mx-auto flex items-center justify-center text-xl mb-2">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <h2 class="text-lg font-bold text-slate-800">Simulasi Tryout Latihan AKG 2026</h2>
+                        <p class="text-xs text-slate-500">Uji kemampuan Anda secara mandiri dengan sistem penilaian instan dan analisis materi.</p>
+                    </div>
+
+                    <div class="space-y-4 pt-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Pilih Jenjang Madrasah</label>
+                            <select id="lat-jenjang" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                                <option value="MI">MI (Madrasah Ibtidaiyah)</option>
+                                <option value="MTs">MTs (Madrasah Tsanawiyah)</option>
+                                <option value="MA" selected>MA (Madrasah Aliyah)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Bidang / Mata Pelajaran</label>
+                            <select id="lat-bidang" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                                <option value="Pedagogik Umum">Pedagogik & Profesional Umum</option>
+                                <option value="Guru Kelas MI">Guru Kelas MI</option>
+                                <option value="PAI">Pendidikan Agama Islam (PAI)</option>
+                                <option value="Matematika">Matematika & Sains</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Jumlah Soal</label>
+                                <select id="lat-jumlah" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                                    <option value="5">5 Soal (Kilat)</option>
+                                    <option value="10" selected>10 Soal (Standar)</option>
+                                    <option value="20">20 Soal (Komprehensif)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Tingkat Kesulitan</label>
+                                <select id="lat-kesulitan" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-kemenag-500 focus:outline-none">
+                                    <option value="Campuran">Campuran (Mudah - HOTS)</option>
+                                    <option value="HOTS">HOTS Tinggi</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pt-4">
+                            <button onclick="startLatihanSession()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-xl shadow transition text-xs flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-play"></i> Mulai Sesi Latihan Sekarang
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Latihan Active Quiz Interface -->
+                <div id="latihan-quiz-card" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-6 max-w-3xl mx-auto">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                        <div>
+                            <span id="quiz-progress-badge" class="bg-kemenag-100 text-kemenag-800 text-[10px] font-bold px-3 py-1 rounded-full">Soal 1 dari 10</span>
+                            <h3 class="font-bold text-slate-800 text-sm mt-1" id="quiz-materi-title">Materi Pedagogik</h3>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-500 font-medium">Waktu Tryout</span>
+                            <div class="font-mono font-bold text-kemenag-700 text-sm" id="quiz-timer">15:00</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <p class="text-sm font-medium text-slate-900 leading-relaxed" id="quiz-question-text">Teks soal latihan akan muncul di sini...</p>
+                        <div id="quiz-options-container" class="space-y-2 pt-2"></div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                        <button onclick="prevQuizQuestion()" id="btn-prev-quiz" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-semibold transition disabled:opacity-50">
+                            <i class="fa-solid fa-arrow-left mr-1"></i> Sebelumnya
+                        </button>
+                        <button onclick="nextQuizQuestion()" id="btn-next-quiz" class="bg-kemenag-600 hover:bg-kemenag-500 text-white px-5 py-2 rounded-xl text-xs font-semibold transition">
+                            Selanjutnya <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Latihan Result Summary Card -->
+                <div id="latihan-result-card" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-6 max-w-2xl mx-auto text-center">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-3xl mx-auto flex items-center justify-center text-3xl mb-2">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">Hasil Simulasi Latihan AKG 2026</h2>
+                        <p class="text-xs text-slate-500 mt-1">Evaluasi tingkat penguasaan kompetensi Anda.</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 py-4">
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <p class="text-[11px] text-slate-500">Nilai Akhir</p>
+                            <h3 class="text-xl font-bold text-kemenag-700" id="res-score">85</h3>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <p class="text-[11px] text-slate-500">Jawaban Benar</p>
+                            <h3 class="text-xl font-bold text-emerald-600" id="res-benar">8 / 10</h3>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <p class="text-[11px] text-slate-500">Jawaban Salah</p>
+                            <h3 class="text-xl font-bold text-rose-600" id="res-salah">2 / 10</h3>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <p class="text-[11px] text-slate-500">Persentase</p>
+                            <h3 class="text-xl font-bold text-amber-600" id="res-persen">85%</h3>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-kemenag-50 rounded-xl text-left border border-kemenag-100 space-y-2">
+                        <h4 class="font-bold text-xs uppercase tracking-wider text-kemenag-900"><i class="fa-solid fa-lightbulb text-gold-500 mr-1"></i> Rekomendasi Belajar AI</h4>
+                        <p class="text-xs text-slate-700 leading-relaxed" id="res-rekomendasi">Penguasaan pedagogik Anda sudah sangat baik. Tingkatkan pendalaman pada materi Evaluasi Pembelajaran berbasis HOTS kurikulum merdeka madrasah.</p>
+                    </div>
+
+                    <div class="pt-2 flex justify-center gap-3">
+                        <button onclick="resetLatihanForm()" class="bg-kemenag-600 hover:bg-kemenag-500 text-white font-semibold py-2.5 px-5 rounded-xl text-xs shadow transition">
+                            <i class="fa-solid fa-rotate-right mr-1"></i> Ulangi Latihan
+                        </button>
+                        <button onclick="switchTab('dashboard')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 px-5 rounded-xl text-xs transition">
+                            Kembali ke Dashboard
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Riwayat Tab -->
+            <section id="tab-riwayat" class="tab-content hidden space-y-6 animate-fade-in">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                <i class="fa-solid fa-clock-rotate-left text-kemenag-600"></i> Riwayat Pembahasan Soal
+                            </h2>
+                            <p class="text-xs text-slate-500">Daftar riwayat soal yang pernah Anda analisis menggunakan AI.</p>
+                        </div>
+                        <button onclick="clearHistory()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 px-3 py-1.5 rounded-xl text-xs font-semibold transition border border-rose-200 flex items-center gap-1">
+                            <i class="fa-solid fa-trash"></i> Bersihkan Riwayat
+                        </button>
+                    </div>
+
+                    <div id="riwayat-list-container" class="space-y-3"></div>
+                </div>
+            </section>
+
+            <!-- Analisis Kompetensi Tab -->
+            <section id="tab-analisis" class="tab-content hidden space-y-6 animate-fade-in">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-6">
+                    <div class="pb-4 border-b border-slate-100">
+                        <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-indigo-600"></i> Analisis Kompetensi Guru Madrasah 2026
+                        </h2>
+                        <p class="text-xs text-slate-500">Pemetaan penguasaan indikator pedagogik dan profesional berdasarkan statistik latihan.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-slate-700">Tingkat Penguasaan per Modul</h4>
+                            
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-xs font-semibold">
+                                    <span>Pedagogik Umum & Karakter Guru</span>
+                                    <span class="text-emerald-600">90%</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-emerald-500 h-full rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-xs font-semibold">
+                                    <span>Penyusunan Perangkat Pembelajaran (RPP/Modul)</span>
+                                    <span class="text-kemenag-600">82%</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-kemenag-600 h-full rounded-full" style="width: 82%"></div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-xs font-semibold">
+                                    <span>Evaluasi & Asesmen HOTS</span>
+                                    <span class="text-amber-600">68%</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-amber-500 h-full rounded-full" style="width: 68%"></div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-xs font-semibold">
+                                    <span>Profesional Bidang Studi & Moderasi Beragama</span>
+                                    <span class="text-emerald-600">88%</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-emerald-500 h-full rounded-full" style="width: 88%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-5 space-y-3 flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold text-xs uppercase tracking-wider text-indigo-900 flex items-center gap-2">
+                                    <i class="fa-solid fa-robot text-indigo-600"></i> Catatan Evaluasi AI Expert
+                                </h4>
+                                <p class="text-xs text-indigo-950 leading-relaxed mt-2">
+                                    Berdasarkan pola latihan Anda menjelang AKG Kementerian Agama 2026, Anda sangat kuat dalam pemahaman konsep pedagogik umum. Namun, perhatikan kembali teknik analisis soal studi kasus HOTS pada aspek evaluasi pembelajaran berbasis kelas.
+                                </p>
+                            </div>
+                            <button onclick="switchTab('auto-gen')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 px-4 rounded-xl text-xs shadow transition text-center flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-robot"></i> Auto-Generate Soal Studi Kasus Sekarang
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Panduan Deploy Hosting Tab -->
+            <section id="tab-deploy" class="tab-content hidden space-y-6 animate-fade-in">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-6 max-w-3xl mx-auto">
+                    <div class="pb-4 border-b border-slate-100">
+                        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase"><i class="fa-solid fa-server mr-1"></i> Panduan Teknis</span>
+                        <h2 class="text-lg font-bold text-slate-800 mt-2">Panduan Deploy Hosting Aplikasi AKG 2026</h2>
+                        <p class="text-xs text-slate-500">Langkah-langkah mudah untuk mengunggah aplikasi web ini ke server hosting publik (cPanel, Vercel, Netlify, atau GitHub Pages).</p>
+                    </div>
+
+                    <div class="space-y-4 text-xs text-slate-700">
+                        <!-- Opsi 1 -->
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                            <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-1 text-emerald-600"></i> Opsi A: Deploy Instan ke Netlify / Vercel (Rekomendasi)
+                            </h4>
+                            <ol class="list-decimal pl-5 space-y-1 text-slate-600">
+                                <li>Simpan seluruh kode aplikasi ini ke dalam satu file bernama <code class="bg-slate-200 px-1 py-0.5 rounded font-mono font-bold text-slate-800">index.html</code>.</li>
+                               <li>Buka <a href="https://app.netlify.com" target="_blank" class="text-kemenag-600 font-semibold underline">Netlify Drop</a> atau <a href="https://vercel.com" target="_blank" class="text-kemenag-600 font-semibold underline">Vercel</a>.</li>
+                                <li>Drag & drop file <code class="bg-slate-200 px-1.5 py-0.5 rounded font-mono font-bold text-slate-800">index.html</code> ke area upload yang disediakan.</li>
+                                <li>Aplikasi langsung online dalam hitungan detik dan siap diakses melalui URL publik Android maupun komputer!</li>
+                            </ol>
+                        </div>
+
+                        <!-- Opsi 2 -->
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                            <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-2 text-emerald-600"></i> Opsi B: Upload ke cPanel Hosting Madrasah / Sekolah
+                            </h4>
+                            <ol class="list-decimal pl-5 space-y-1 text-slate-600">
+                                <li>Login ke panel hosting (cPanel) madrasah Anda.</li>
+                                <li>Buka menu <strong class="text-slate-900">File Manager</strong> &rarr; masuk ke direktori <code class="bg-slate-200 px-1.5 py-0.5 rounded font-mono font-bold text-slate-800">public_html</code>.</li>
+                                <li>Buat folder baru (misal: <code class="bg-slate-200 px-1.5 py-0.5 rounded font-mono font-bold text-slate-800">akg2026</code>) atau unggah langsung di root domain.</li>
+                                <li>Upload file <code class="bg-slate-200 px-1.5 py-0.5 rounded font-mono font-bold text-slate-800">index.html</code> ke dalam folder tersebut.</li>
+                                <li>Akses website melalui <code class="bg-slate-200 px-1.5 py-0.5 rounded font-mono font-bold text-slate-800">namadomain.com/akg2026</code>.</li>
+                            </ol>
+                        </div>
+
+                        <!-- Keunggulan Single File -->
+                        <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl space-y-1">
+                            <h4 class="font-bold text-emerald-900 text-xs uppercase tracking-wider"><i class="fa-solid fa-circle-check mr-1"></i> Keunggulan Arsitektur Single-File</h4>
+                            <p class="text-emerald-950 leading-relaxed">
+                                Karena aplikasi ini dirancang dalam 1 file HTML mandiri (terintegrasi Tailwind CSS, FontAwesome, dan logika JavaScript), aplikasi sangat ringan, anti-error karena dependensi eksternal, dan sangat stabil untuk di-deploy di web hosting manapun.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pengaturan Tab -->
+            <section id="tab-pengaturan" class="tab-content hidden space-y-6 animate-fade-in">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-5 max-w-xl mx-auto">
+                    <div class="pb-4 border-b border-slate-100">
+                        <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-gear text-slate-700"></i> Konfigurasi AI & Aplikasi
+                        </h2>
+                        <p class="text-xs text-slate-500">Pengaturan sistem dan preferensi akun guru.</p>
+                    </div>
+
+                    <div class="space-y-4 text-xs">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Nama Lengkap Guru</label>
+                            <input type="text" id="set-nama" value="Ustadz / Ustadzah Guru Madrasah" class="w-full p-2.5 rounded-xl border border-slate-300 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Asal Madrasah / Kabupaten</label>
+                            <input type="text" id="set-madrasah" value="MAN Insan Cendekia / Kemenag RI" class="w-full p-2.5 rounded-xl border border-slate-300 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Model AI Engine</label>
+                            <select class="w-full p-2.5 rounded-xl border border-slate-300 focus:outline-none">
+                                <option>Gemini 3 Flash Preview (Optimized for AKG 2026)</option>
+                                <option>Gemini Pro Advanced</option>
+                            </select>
+                        </div>
+                        <div class="pt-3">
+                            <button onclick="saveSettings()" class="w-full bg-kemenag-600 hover:bg-kemenag-500 text-white font-semibold py-2.5 px-4 rounded-xl shadow transition">
+                                Simpan Pengaturan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-500">
+        <p>AKG 2026 – AI Pembahasan Soal Guru Madrasah &bull; <strong class="text-kemenag-800">Kreatif by Witno</strong></p>
+    </footer>
+
+    <!-- Add Question Modal -->
+    <div id="add-question-modal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl animate-fade-in max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <h3 class="font-bold text-slate-800 text-base"><i class="fa-solid fa-plus-circle text-kemenag-600 mr-1"></i> Tambah Soal ke Bank Soal</h3>
+                <button onclick="closeAddQuestionModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Jenjang</label>
+                    <select id="modal-jenjang" class="w-full p-2.5 rounded-xl border border-slate-300">
+                        <option value="MI">MI</option>
+                        <option value="MTs">MTs</option>
+                        <option value="MA" selected>MA</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Materi / Bidang</label>
+                    <input type="text" id="modal-materi" placeholder="Contoh: Pedagogik - Strategi Pembelajaran" class="w-full p-2.5 rounded-xl border border-slate-300">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Teks Pertanyaan Soal</label>
+                    <textarea id="modal-soal" rows="3" placeholder="Tulis soal..." class="w-full p-2.5 rounded-xl border border-slate-300"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" id="modal-opt-a" placeholder="Opsi A" class="p-2 rounded-xl border border-slate-300">
+                    <input type="text" id="modal-opt-b" placeholder="Opsi B" class="p-2 rounded-xl border border-slate-300">
+                    <input type="text" id="modal-opt-c" placeholder="Opsi C" class="p-2 rounded-xl border border-slate-300">
+                    <input type="text" id="modal-opt-d" placeholder="Opsi D" class="p-2 rounded-xl border border-slate-300">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Kunci Jawaban Benar</label>
+                    <select id="modal-kunci" class="w-full p-2.5 rounded-xl border border-slate-300">
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Pembahasan Singkat</label>
+                    <textarea id="modal-pembahasan" rows="2" placeholder="Penjelasan jawaban..." class="w-full p-2.5 rounded-xl border border-slate-300"></textarea>
+                </div>
+                <div class="pt-3">
+                    <button onclick="saveNewBankQuestion()" class="w-full bg-kemenag-600 hover:bg-kemenag-500 text-white font-semibold py-2.5 rounded-xl transition">
+                        Simpan ke Bank Soal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let appState = {
+            totalBahas: 24,
+            totalLatihan: 8,
+            akurasi: 84,
+            bankSoal: [
+                { id: 1, jenjang: 'MA', materi: 'Pedagogik - Model Pembelajaran', soal: 'Dalam merancang RPP Kurikulum Merdeka di Madrasah, seorang guru merumuskan tujuan pembelajaran yang berpusat pada peserta didik dan memuat unsur Profil Pelajar Pancasila & Rahmatan lil Alamin. Langkah awal yang paling tepat adalah...', a: 'Menyusun instrumen penilaian sumatif', b: 'Menganalisis Capaian Pembelajaran (CP) dan Alur Tujuan Pembelajaran (ATP)', c: 'Memilih media berbasis digital interaktif', d: 'Menentukan jadwal tatap muka di kelas', kunci: 'B', pembahasan: 'Penyusunan modul ajar / RPP wajib diawali dengan analisis CP dan ATP yang ditetapkan pemerintah madrasah.' },
+                { id: 2, jenjang: 'MTs', materi: 'Fikih & Ibadah Kontemporer', soal: 'Seorang guru Fikih di MTs memberikan studi kasus tentang zakat profesi dan kontemporer. Pendekatan pembelajaran kontekstual yang paling tepat digunakan adalah...', a: 'Ceramah satu arah di depan kelas', b: 'Diskusi kelompok studi kasus pengelolaan Baitul Mal', c: 'Menghafalkan dalil quran tanpa terjemahan', d: 'Memberikan tugas mencatat buku teks', kunci: 'B', pembahasan: 'Pendekatan kontekstual dan studi kasus sangat efektif untuk materi zakat kontemporer agar siswa memahami implementasi nyata.' },
+                { id: 3, jenjang: 'MI', materi: 'Guru Kelas MI - Tematik', soal: 'Pembelajaran tematik terpadu di Madrasah Ibtidaiyah memadukan beberapa mata pelajaran dalam satu tema. Karakteristik utama pembelajaran ini adalah...', a: 'Terisolasi antar mata pelajaran', b: 'Berpusat pada guru (teacher centered)', c: 'Pengalaman langsung dan bermakna bagi peserta didik', d: 'Fokus pada hafalan rumus eksakta', kunci: 'C', pembahasan: 'Pembelajaran tematik di MI dirancang agar siswa usia anak memahami konsep secara holistik dan kontekstual.' }
+            ],
+            riwayat: [
+                { tanggal: '18 Sep 2026', soal: 'Analisis RPP & Asesmen HOTS Madrasah', materi: 'Pedagogik', status: 'Selesai', jawaban: 'B' },
+                { tanggal: '17 Sep 2026', soal: 'Penerapan Moderasi Beragama dalam Pembelajaran PAI', materi: 'PAI & Moderasi', status: 'Selesai', jawaban: 'A' }
+            ],
+            latestGeneratedQuestions: []
+        };
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-link').forEach(el => {
+                el.classList.remove('bg-kemenag-50', 'text-kemenag-700');
+                el.classList.add('text-slate-600');
+            });
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.add('bg-kemenag-50', 'text-kemenag-700');
+                activeNav.classList.remove('text-slate-600');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Auto-Generate Soal Otomatis Feature
+        function triggerAutoGenerate() {
+            const mapel = document.getElementById('gen-mapel').value;
+            const jenjang = document.getElementById('gen-jenjang').value;
+            const kesulitan = document.getElementById('gen-kesulitan').value;
+            const jumlah = parseInt(document.getElementById('gen-jumlah').value);
+            const topik = document.getElementById('gen-topik').value.trim();
+
+            const loading = document.getElementById('auto-gen-loading');
+            const resultBox = document.getElementById('auto-gen-result');
+
+            loading.classList.remove('hidden');
+            resultBox.classList.add('hidden');
+
+            setTimeout(() => {
+                loading.classList.add('hidden');
+                resultBox.classList.remove('hidden');
+
+                document.getElementById('auto-gen-result-title').innerText = `Paket ${jumlah} Soal ${mapel} (${jenjang}) - ${kesulitan}`;
+
+                let generated = [];
+                for (let i = 1; i <= jumlah; i++) {
+                    generated.push({
+                        id: Date.now() + i,
+                        jenjang: jenjang,
+                        materi: `${mapel} - Indikator ${i}`,
+                        soal: `Berdasarkan kisi-kisi AKG Kementerian Agama 2026 pada bidang ${mapel} (${topik || 'Kompetensi Utama'}), studi kasus ${i} menunjukkan perlunya pendekatan pembelajaran yang adaptif. Manakah tindakan paling tepat bagi guru madrasah?`,
+                        a: 'Melaksanakan pembelajaran konvensional tanpa modifikasi media',
+                        b: 'Menerapkan strategi berbasis HOTS yang mengintegrasikan nilai moderasi beragama',
+                        c: 'Menyerahkan evaluasi sepenuhnya kepada panitia ujian akhir',
+                        d: 'Mengabaikan keragaman kesiapan belajar peserta didik di dalam kelas',
+                        kunci: 'B',
+                        pembahasan: `Pembahasan Soal ${i}: Guru profesional madrasah dituntut mampu mengintegrasikan standar kurikulum berorientasi HOTS serta penguatan karakter moderasi beragama.`
+                    });
+                }
+
+                appState.latestGeneratedQuestions = generated;
+
+                const listEl = document.getElementById('auto-gen-questions-list');
+                listEl.innerHTML = generated.map((q, idx) => `
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="bg-kemenag-100 text-kemenag-800 text-[10px] font-bold px-2 py-0.5 rounded">Soal ${idx + 1} &bull; ${q.jenjang}</span>
+                            <span class="text-[10px] text-emerald-700 font-bold"><i class="fa-solid fa-check mr-1"></i> Kunci: ${q.kunci}</span>
+                        </div>
+                        <p class="text-xs font-semibold text-slate-900">${q.soal}</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[11px] text-slate-700 pt-1">
+                            <div>A. ${q.a}</div>
+                            <div class="font-bold text-emerald-800">B. ${q.b}</div>
+                            <div>C. ${q.c}</div>
+                            <div>D. ${q.d}</div>
+                        </div>
+                        <div class="p-2 bg-kemenag-50 rounded-lg text-[11px] text-slate-600 mt-2">
+                            <strong>Pembahasan AI:</strong> ${q.pembahasan}
+                        </div>
+                    </div>
+                `).join('');
+
+                showToast(`Berhasil men-generate ${jumlah} soal otomatis!`);
+            }, 1500);
+        }
+
+        function saveGeneratedToBank() {
+            if (appState.latestGeneratedQuestions.length === 0) return;
+            appState.bankSoal.push(...appState.latestGeneratedQuestions);
+            document.getElementById('stat-bank-soal').innerText = appState.bankSoal.length;
+            renderBankSoal();
+            showToast('Semua soal hasil auto-generate berhasil disimpan ke Bank Soal!');
+            switchTab('bank-soal');
+        }
+
+        function loadSampleQuestion() {
+            document.getElementById('input-mapel').value = 'Pedagogik Umum';
+            document.getElementById('input-jenjang').value = 'MA';
+            document.getElementById('input-no').value = 'Soal 01';
+            document.getElementById('input-sumber').value = 'Kisi-kisi Resmi AKG 2026';
+            document.getElementById('input-soal').value = 'Dalam merancang pembelajaran berdiferensiasi di Madrasah Aliyah, seorang guru mendapati peserta didik memiliki kesiapan belajar yang sangat beragam pada mata pelajaran Akidah Akhlak. Tindakan pedagogis paling tepat yang harus dilakukan guru adalah...';
+            document.getElementById('input-opt-a').value = 'Menyamaratakan kecepatan mengajar sesuai standar ketuntasan minimal';
+            document.getElementById('input-opt-b').value = 'Menyediakan konten, proses, dan produk pembelajaran yang disesuaikan dengan profil dan kesiapan belajar peserta didik';
+            document.getElementById('input-opt-c').value = 'Hanya fokus membimbing siswa yang memiliki kemampuan akademik tinggi';
+            document.getElementById('input-opt-d').value = 'Memberikan tugas tambahan mandiri tanpa penjelasan konsep';
+            document.getElementById('input-opt-e').value = 'Menyerahkan proses belajar sepenuhnya kepada kelompok sebaya';
+            document.getElementById('input-user-jawaban').value = 'B';
+            document.getElementById('input-mode').value = 'lengkap';
+            showToast('Contoh soal berhasil dimuat!');
+        }
+
+        function resetForm() {
+            document.getElementById('ai-form').reset();
+            document.getElementById('ai-output-container').classList.add('hidden');
+            document.getElementById('similar-questions-container').classList.add('hidden');
+            showToast('Form berhasil direset.');
+        }
+
+        function handleAnalyzeQuestion(e) {
+            e.preventDefault();
+            const soalText = document.getElementById('input-soal').value.trim();
+            if (!soalText) {
+                alert('Silakan masukkan teks soal terlebih dahulu!');
+                return;
+            }
+
+            const mapel = document.getElementById('input-mapel').value;
+            const jenjang = document.getElementById('input-jenjang').value;
+            const userAns = document.getElementById('input-user-jawaban').value;
+            const mode = document.getElementById('input-mode').value;
+
+            const container = document.getElementById('ai-output-container');
+            const loading = document.getElementById('ai-loading');
+            const content = document.getElementById('ai-result-content');
+            
+            container.classList.remove('hidden');
+            loading.classList.remove('hidden');
+            content.classList.add('hidden');
+            document.getElementById('similar-questions-container').classList.add('hidden');
+
+            setTimeout(() => {
+                loading.classList.add('hidden');
+                content.classList.remove('hidden');
+
+                document.getElementById('res-badge-mapel').innerText = `${mapel} - ${jenjang}`;
+                document.getElementById('res-title').innerText = `Analisis Pembahasan AKG 2026 (${mapel})`;
+                document.getElementById('res-materi').innerText = `${mapel} Profesional & Pedagogik`;
+                document.getElementById('res-submateri').innerText = 'Strategi Pembelajaran Berdiferensiasi & Asesmen Madrasah';
+                document.getElementById('res-kompetensi').innerText = 'Kompetensi Pedagogik: Merancang dan Mengevaluasi Pembelajaran';
+                document.getElementById('res-keyword').innerText = 'Pembelajaran Berdiferensiasi, Profil Pelajar Pancasila, Kesiapan Belajar';
+                document.getElementById('res-jenis-soal').innerText = 'Analisis / Studi Kasus Pedagogik';
+                
+                const correctAns = 'B';
+                document.getElementById('res-jawaban-tepat').innerText = `Pilihan B: Menyediakan konten, proses, dan produk pembelajaran yang disesuaikan dengan profil dan kesiapan belajar peserta didik.`;
+
+                const checkContainer = document.getElementById('res-user-check-box');
+                if (userAns) {
+                    checkContainer.classList.remove('hidden');
+                    const isCorrect = (userAns === correctAns);
+                    const iconEl = document.getElementById('res-check-icon');
+                    const statusTitle = document.getElementById('res-check-status-title');
+                    const statusDesc = document.getElementById('res-check-desc');
+
+                    if (isCorrect) {
+                        checkContainer.className = 'p-4 rounded-xl border bg-emerald-50 border-emerald-200';
+                        iconEl.className = 'w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold text-white shrink-0 bg-emerald-600';
+                        iconEl.innerHTML = '<i class="fa-solid fa-check"></i>';
+                        statusTitle.innerText = `Jawaban Anda (${userAns}): BENAR! Luar Biasa.`;
+                        statusDesc.innerText = 'Analisis Anda sudah tepat sejalan dengan prinsip pedagogik Kemenag.';
+                    } else {
+                        checkContainer.className = 'p-4 rounded-xl border bg-amber-50 border-amber-200';
+                        iconEl.className = 'w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold text-white shrink-0 bg-amber-600';
+                        iconEl.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                        statusTitle.innerText = `Jawaban Anda (${userAns}): Belum Tepat. Mari kita tinjau konsep dasarnya.`;
+                        statusDesc.innerText = `Kunci jawaban paling tepat adalah Pilihan ${correctAns}. Mari pelajari pembahasannya di bawah.`;
+                    }
+                } else {
+                    checkContainer.classList.add('hidden');
+                }
+
+                let pembText = '';
+                if (mode === 'singkat') {
+                    pembText = `<p>Pembelajaran berdiferensiasi adalah pendekatan pembelajaran yang memahami bahwa setiap siswa unik. Guru menyesuaikan konten, proses, dan produk sesuai kesiapan siswa untuk mencapai ketuntasan optimal di madrasah.</p>`;
+                } else {
+                    pembText = `
+                        <p><strong>1. Konsep Utama:</strong> Pembelajaran berdiferensiasi di madrasah berakar dari pemahaman bahwa peserta didik memiliki gaya belajar, minat, dan tingkat kesiapan (readiness) yang heterogen.</p>
+                        <p><strong>2. Langkah Berpikir Pedagogik:</strong> Ketika menghadapi variasi kesiapan belajar, tindakan reaktif menyamaratakan metode tidak efektif. Guru profesional harus melakukan modifikasi pada tiga elemen utama kurikulum merdeka: konten materi, proses pembelajaran, dan bentuk produk tagihan.</p>
+                        <p><strong>3. Hubungan Soal dan Jawaban:</strong> Pilihan B secara komprehensif mencakup esensi pembelajaran berdiferensiasi, sementara pilihan lainnya cenderung diskriminatif atau mengabaikan hak belajar peserta didik.</p>
+                    `;
+                }
+                document.getElementById('res-pembahasan-teks').innerHTML = pembText;
+
+                const optList = document.getElementById('res-analisis-pilihan');
+                optList.innerHTML = `
+                    <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200"><strong>A. Salah:</strong> Menyamaratakan kecepatan tidak sesuai dengan prinsip keadilan dan kebutuhan individual siswa.</div>
+                    <div class="p-2.5 bg-emerald-50 rounded-xl border border-emerald-200"><strong>B. BENAR:</strong> Mencerminkan pelayanan prima guru dalam memfasilitasi keragaman kesiapan belajar peserta didik.</div>
+                    <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200"><strong>C. Salah:</strong> Diskriminatif dan melanggar prinsip pemerataan layanan pendidikan di madrasah.</div>
+                    <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200"><strong>D. Salah:</strong> Tugas tanpa bimbingan dan penyesuaian justru menurunkan motivasi belajar siswa.</div>
+                `;
+
+                document.getElementById('res-tips').innerText = 'Perhatikan kata kunci pada soal studi kasus pedagogik: "keragaman", "kesiapan belajar", dan "berpusat pada peserta didik". Pilih opsi yang paling inklusif dan memfasilitasi kebutuhan siswa.';
+                document.getElementById('res-materi-belajar').innerText = 'Modul Pedagogik AKG 2026: Teori Belajar Konstruktivistik, Pembelajaran Berdiferensiasi, & Asesmen Formatif.';
+
+                appState.totalBahas++;
+                document.getElementById('stat-total-bahas').innerText = appState.totalBahas;
+
+                appState.riwayat.unshift({
+                    tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+                    soal: soalText.substring(0, 50) + '...',
+                    materi: mapel,
+                    status: 'Selesai',
+                    jawaban: correctAns
+                });
+                renderRiwayatList();
+
+                container.scrollIntoView({ behavior: 'smooth' });
+                showToast('Analisis AI berhasil diselesaikan!');
+            }, 1200);
+        }
+
+        function generateSimilarQuestions() {
+            const container = document.getElementById('similar-questions-container');
+            container.classList.remove('hidden');
+
+            const list = document.getElementById('similar-list');
+            list.innerHTML = `
+                <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                    <div class="flex justify-between text-xs font-bold text-kemenag-800">
+                        <span>Soal Sejenis 1 (Tingkat: Mudah)</span>
+                        <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">Pedagogik Dasar</span>
+                    </div>
+                    <p class="text-xs text-slate-800 font-medium">Dalam menyusun instrumen penilaian formatif di Madrasah, hal utama yang harus diperhatikan guru agar selaras dengan tujuan pembelajaran adalah...</p>
+                    <p class="text-xs text-slate-600"><strong>Kunci:</strong> Validitas konstruk dan kesesuaian indikator ketercapaian.</p>
+                </div>
+                <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                    <div class="flex justify-between text-xs font-bold text-kemenag-800">
+                        <span>Soal Sejenis 2 (Tingkat: Sedang)</span>
+                        <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded">Studi Kasus Kelas</span>
+                    </div>
+                    <p class="text-xs text-slate-800 font-medium">Seorang guru mendapati siswa pasif saat diskusi kelompok. Tindakan reflektif awal yang harus diambil guru adalah...</p>
+                    <p class="text-xs text-slate-600"><strong>Kunci:</strong> Mengevaluasi lembar kerja dan peran kolaboratif setiap anggota kelompok.</p>
+                </div>
+                <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                    <div class="flex justify-between text-xs font-bold text-kemenag-800">
+                        <span>Soal Sejenis 3 (Tingkat: HOTS)</span>
+                        <span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded">Analisis Tingkat Tinggi</span>
+                    </div>
+                    <p class="text-xs text-slate-800 font-medium">Analisis keterkaitan antara penguatan nilai moderasi beragama dengan pembentukan karakter peserta didik di madrasah aliyah berbasis riset...</p>
+                    <p class="text-xs text-slate-600"><strong>Kunci:</strong> Integrasi nilai toleransi (tasamuh) dalam projek penguatan profil pelajar mandiri.</p>
+                </div>
+            `;
+            container.scrollIntoView({ behavior: 'smooth' });
+            showToast('5 Soal latihan sejenis berhasil di-generate!');
+        }
+
+        function renderBankSoal(data = appState.bankSoal) {
+            const list = document.getElementById('bank-soal-list');
+            if (data.length === 0) {
+                list.innerHTML = `<p class="text-xs text-slate-500 text-center py-6">Tidak ada soal ditemukan.</p>`;
+                return;
+            }
+            list.innerHTML = data.map((item, idx) => `
+                <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="bg-kemenag-100 text-kemenag-800 text-[10px] font-bold px-2 py-0.5 rounded">${item.jenjang} - ${item.materi}</span>
+                        <span class="text-[10px] text-slate-400 font-mono">ID: AKG-2026-${item.id}</span>
+                    </div>
+                    <p class="text-xs font-semibold text-slate-900">${item.soal}</p>
+                    <div class="grid grid-cols-2 gap-2 text-xs text-slate-600 pt-1">
+                        <div>A. ${item.a}</div>
+                        <div>B. ${item.b}</div>
+                        <div>C. ${item.c}</div>
+                        <div>D. ${item.d}</div>
+                    </div>
+                    <div class="pt-2 border-t border-slate-200 flex items-center justify-between text-xs">
+                        <span class="text-emerald-700 font-bold"><i class="fa-solid fa-key mr-1"></i> Kunci: ${item.kunci}</span>
+                        <button onclick="loadBankToBahas(${item.id})" class="bg-kemenag-600 hover:bg-kemenag-500 text-white px-3 py-1 rounded-lg font-semibold transition">
+                            Bahas dengan AI <i class="fa-solid fa-wand-magic-sparkles ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterBankSoal() {
+            const query = document.getElementById('search-bank').value.toLowerCase();
+            const jenjang = document.getElementById('filter-bank-jenjang').value;
+            const filtered = appState.bankSoal.filter(item => {
+                const matchQ = item.soal.toLowerCase().includes(query) || item.materi.toLowerCase().includes(query);
+                const matchJ = jenjang ? item.jenjang === jenjang : true;
+                return matchQ && matchJ;
+            });
+            renderBankSoal(filtered);
+        }
+
+        function loadBankToBahas(id) {
+            const item = appState.bankSoal.find(s => s.id === id);
+            if (item) {
+                switchTab('pembahasan');
+                document.getElementById('input-jenjang').value = item.jenjang;
+                document.getElementById('input-soal').value = item.soal;
+                document.getElementById('input-opt-a').value = item.a;
+                document.getElementById('input-opt-b').value = item.b;
+                document.getElementById('input-opt-c').value = item.c;
+                document.getElementById('input-opt-d').value = item.d;
+                showToast('Soal bank berhasil dimuat ke AI Generator.');
+            }
+        }
+
+        function openAddQuestionModal() {
+            document.getElementById('add-question-modal').classList.remove('hidden');
+        }
+        function closeAddQuestionModal() {
+            document.getElementById('add-question-modal').classList.add('hidden');
+        }
+        function saveNewBankQuestion() {
+            const jenjang = document.getElementById('modal-jenjang').value;
+            const materi = document.getElementById('modal-materi').value;
+            const soal = document.getElementById('modal-soal').value;
+            const a = document.getElementById('modal-opt-a').value;
+            const b = document.getElementById('modal-opt-b').value;
+            const c = document.getElementById('modal-opt-c').value;
+            const d = document.getElementById('modal-opt-d').value;
+            const kunci = document.getElementById('modal-kunci').value;
+            const pembahasan = document.getElementById('modal-pembahasan').value;
+
+            if (!soal || !materi) {
+                alert('Mohon isi materi dan teks soal!');
+                return;
+            }
+
+            appState.bankSoal.push({
+                id: appState.bankSoal.length + 1,
+                jenjang, materi, soal, a, b, c, d, kunci, pembahasan
+            });
+            document.getElementById('stat-bank-soal').innerText = appState.bankSoal.length;
+
+            closeAddQuestionModal();
+            renderBankSoal();
+            showToast('Soal berhasil ditambahkan ke Bank Soal!');
+        }
+
+        let quizState = {
+            active: false,
+            currentIndex: 0,
+            questions: [],
+            answers: []
+        };
+
+        function startLatihanSession() {
+            const jumlah = parseInt(document.getElementById('lat-jumlah').value);
+            quizState.questions = [];
+            quizState.answers = new Array(jumlah).fill(null);
+            quizState.currentIndex = 0;
+            quizState.active = true;
+
+            for (let i = 0; i < jumlah; i++) {
+                quizState.questions.push({
+                    id: i + 1,
+                    materi: `Modul Kompetensi Pedagogik & Profesional (${i + 1})`,
+                    soal: `Pertanyaan uji coba simulasi AKG 2026 nomor ${i + 1}: Manakah strategi pembelajaran paling efektif untuk menumbuhkan berpikir kritis siswa madrasah?`,
+                    options: [
+                        { key: 'A', text: 'Memberikan ceramah hapalan tanpa dialog' },
+                        { key: 'B', text: 'Menerapkan problem-based learning berbasis studi kasus nyata' },
+                        { key: 'C', text: 'Menugaskan siswa mencatat seluruh bab buku paket' },
+                        { key: 'D', text: 'Menguji siswa dengan ulangan harian setiap pertemuan' }
+                    ],
+                    kunci: 'B'
+                });
+            }
+
+            document.getElementById('latihan-setup-card').classList.add('hidden');
+            document.getElementById('latihan-quiz-card').classList.remove('hidden');
+            document.getElementById('latihan-result-card').classList.add('hidden');
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const q = quizState.questions[quizState.currentIndex];
+            document.getElementById('quiz-progress-badge').innerText = `Soal ${quizState.currentIndex + 1} dari ${quizState.questions.length}`;
+            document.getElementById('quiz-materi-title').innerText = q.materi;
+            document.getElementById('quiz-question-text').innerText = q.soal;
+
+            const optContainer = document.getElementById('quiz-options-container');
+            optContainer.innerHTML = q.options.map(opt => {
+                const isSelected = quizState.answers[quizState.currentIndex] === opt.key;
+                return `
+                    <label class="flex items-center space-x-3 p-3 rounded-xl border cursor-pointer transition ${isSelected ? 'bg-kemenag-50 border-kemenag-500 text-kemenag-900 font-semibold' : 'bg-slate-50 border-slate-200 hover:bg-slate-100 text-slate-700'}">
+                        <input type="radio" name="quiz-opt" value="${opt.key}" ${isSelected ? 'checked' : ''} onchange="selectQuizAnswer('${opt.key}')" class="text-kemenag-600 focus:ring-kemenag-500">
+                        <span class="w-6 h-6 rounded-lg bg-white border border-slate-300 flex items-center justify-center font-bold text-xs shrink-0">${opt.key}</span>
+                        <span class="text-xs">${opt.text}</span>
+                    </label>
+                `;
+            }).join('');
+
+            document.getElementById('btn-prev-quiz').disabled = quizState.currentIndex === 0;
+            const nextBtn = document.getElementById('btn-next-quiz');
+            if (quizState.currentIndex === quizState.questions.length - 1) {
+                nextBtn.innerHTML = `Selesai & Lihat Hasil <i class="fa-solid fa-flag-checkered ml-1"></i>`;
+            } else {
+                nextBtn.innerHTML = `Selanjutnya <i class="fa-solid fa-arrow-right ml-1"></i>`;
+            }
+        }
+
+        function selectQuizAnswer(key) {
+            quizState.answers[quizState.currentIndex] = key;
+        }
+
+        function nextQuizQuestion() {
+            if (quizState.currentIndex < quizState.questions.length - 1) {
+                quizState.currentIndex++;
+                renderQuizQuestion();
+            } else {
+                finishQuizSession();
+            }
+        }
+
+        function prevQuizQuestion() {
+            if (quizState.currentIndex > 0) {
+                quizState.currentIndex--;
+                renderQuizQuestion();
+            }
+        }
+
+        function finishQuizSession() {
+            let benar = 0;
+            quizState.questions.forEach((q, idx) => {
+                if (quizState.answers[idx] === q.kunci) benar++;
+            });
+            const salah = quizState.questions.length - benar;
+            const skor = Math.round((benar / quizState.questions.length) * 100);
+
+            document.getElementById('latihan-quiz-card').classList.add('hidden');
+            document.getElementById('latihan-result-card').classList.remove('hidden');
+
+            document.getElementById('res-score').innerText = skor;
+            document.getElementById('res-benar').innerText = `${benar} / ${quizState.questions.length}`;
+            document.getElementById('res-salah').innerText = `${salah} / ${quizState.questions.length}`;
+            document.getElementById('res-persen').innerText = `${skor}%`;
+
+            appState.totalLatihan++;
+            document.getElementById('stat-total-latihan').innerText = appState.totalLatihan;
+            showToast('Tryout Latihan AKG selesai dievaluasi!');
+        }
+
+        function resetLatihanForm() {
+            document.getElementById('latihan-result-card').classList.add('hidden');
+            document.getElementById('latihan-setup-card').classList.remove('hidden');
+        }
+
+        function renderRiwayatList() {
+            const container = document.getElementById('riwayat-list-container');
+            if (appState.riwayat.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-6">Belum ada riwayat pembahasan.</p>`;
+                return;
+            }
+            container.innerHTML = appState.riwayat.map((item, idx) => `
+                <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-kemenag-100 text-kemenag-800 font-bold px-2 py-0.5 rounded text-[10px]">${item.materi}</span>
+                            <span class="text-slate-400">${item.tanggal}</span>
+                        </div>
+                        <p class="font-semibold text-slate-800">${item.soal}</p>
+                    </div>
+                    <button onclick="switchTab('pembahasan')" class="bg-kemenag-600 text-white px-3 py-1.5 rounded-lg font-semibold shrink-0 hover:bg-kemenag-500 transition">
+                        Buka <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            `).join('');
+
+            const recentContainer = document.getElementById('recent-history-list');
+            if (recentContainer) {
+                recentContainer.innerHTML = appState.riwayat.slice(0, 3).map(item => `
+                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-between text-xs">
+                        <div>
+                            <span class="text-kemenag-700 font-bold">${item.materi}</span> &bull; <span class="text-slate-400">${item.tanggal}</span>
+                            <p class="font-medium text-slate-800 mt-0.5">${item.soal}</p>
+                        </div>
+                        <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold text-[10px]">Selesai</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function clearHistory() {
+            if (confirm('Apakah Anda yakin ingin menghapus semua riwayat pembahasan?')) {
+                appState.riwayat = [];
+                renderRiwayatList();
+                showToast('Riwayat berhasil dibersihkan.');
+            }
+        }
+
+        function exportResult(type) {
+            if (type === 'salin') {
+                const text = document.getElementById('ai-result-content').innerText;
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('Pembahasan berhasil disalin ke clipboard!');
+                } catch (err) {
+                    alert('Gagal menyalin teks.');
+                }
+                document.body.removeChild(textarea);
+            } else {
+                window.print();
+            }
+        }
+
+        function saveSettings() {
+            const nama = document.getElementById('set-nama').value;
+            showToast(`Pengaturan berhasil disimpan untuk ${nama}!`);
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-5 right-5 bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-xl z-50 flex items-center gap-2 animate-fade-in';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        window.onload = function() {
+            renderBankSoal();
+            renderRiwayatList();
+        }
+    </script>
+</body>
+</html>
